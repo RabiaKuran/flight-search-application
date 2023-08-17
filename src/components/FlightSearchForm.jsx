@@ -1,12 +1,27 @@
 import React, { useState } from "react";
 import "../styles/FlightSearchForm.css";
-function FlightSearchForm() {
+function FlightSearchForm({onSearch}) {
   const [departureAirport, setDepartureAirport] = useState("");
   const [arrivalAirport, setArrivalAirport] = useState("");
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [oneWay, setOneWay] = useState(false);
 
+  const handleSearch = () => {
+    if (!departureAirport || !arrivalAirport || !departureDate || (!oneWay && !returnDate)) {
+      alert("Lütfen tüm alanları doldurun.");
+      return;
+    }
+    const searchParams = {
+      departureAirport,
+      arrivalAirport,
+      departureDate,
+      returnDate,
+      oneWay,
+    };
+
+    onSearch(searchParams);
+  };
   return (
     <div className="flight-search-form">
       <div className="flight-search">
@@ -42,7 +57,7 @@ function FlightSearchForm() {
         <div>
           {!oneWay && (
             <>
-              <h4 className="title">DönüşTarihi</h4>
+              <h4 className="title">Dönüş Tarihi</h4>
               <input
                 type="date"
                 placeholder="Varış Tarihi"
@@ -65,7 +80,7 @@ function FlightSearchForm() {
           </label>
           
         </div>
-        <div><button>Arama Yap</button></div>
+        <div><button onClick={handleSearch}>Arama Yap</button></div>
       </div>
     </div>
   );

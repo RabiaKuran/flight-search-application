@@ -1,29 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/FlightSearchForm.css";
-function FlightSearchForm({onSearch}) {
+import ADialog from "./dialog/ADialog";
+import axios from "axios";
+
+function FlightSearchForm({ onSearch }) {
   const [departureAirport, setDepartureAirport] = useState("");
   const [arrivalAirport, setArrivalAirport] = useState("");
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [oneWay, setOneWay] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [airports, setAirports] = useState([]);
+
+  useEffect(() => {
+    fetchAirports();
+  }, []);
+  const fetchAirports = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/airports");
+      setAirports(response.data);
+    } catch (error) {
+      console.error("Havaalanı verileri çekilemedi:", error);
+    }
+  };
+  const filterAirports = (input, airportList) => {
+    return airportList.filter(
+      (airport) =>
+        airport.name.toLowerCase().indexOf(input.toLowerCase()) === 0
+    );
+  };
 
   const handleSearch = () => {
-    if (!departureAirport || !arrivalAirport || !departureDate || (!oneWay && !returnDate)) {
-      alert("Lütfen tüm alanları doldurun.");
-      return;
-    }
-    const searchParams = {
-      departureAirport,
-      arrivalAirport,
-      departureDate,
-      returnDate,
-      oneWay,
-    };
+    if (
+      !departureAirport ||
+      !arrivalAirport ||
+      !departureDate ||
+      (!oneWay && !returnDate)
+    ) {
+      handleClickOpen();
+    } else {
+      const searchParams = {
+        departureAirport,
+        arrivalAirport,
+        departureDate,
+        returnDate,
+        oneWay,
+      };
 
-    onSearch(searchParams);
+      onSearch(searchParams);
+    }
   };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  
   return (
     <div className="flight-search-form">
+      <ADialog open={open} handleClose={handleClose} />
       <div className="flight-search">
         <div style={{ marginRight: "50px" }}>
           <h4 className="title">Nereden</h4>
@@ -32,7 +70,14 @@ function FlightSearchForm({onSearch}) {
             placeholder="Kalkış Havaalanı"
             value={departureAirport}
             onChange={(e) => setDepartureAirport(e.target.value)}
+            list="departureAirport"
           />
+           <datalist id="departureAirport">
+            {filterAirports(departureAirport, airports).map((airport) => (
+              <option key={airport.id} value={airport.name} />
+            ))}
+          </datalist>
+          
         </div>
         <div>
           <h4 className="title">Nereye</h4>
@@ -41,7 +86,13 @@ function FlightSearchForm({onSearch}) {
             placeholder="Varış Havaalanı"
             value={arrivalAirport}
             onChange={(e) => setArrivalAirport(e.target.value)}
+            list="arrivalAirport"
           />
+          <datalist id="arrivalAirport">
+            {filterAirports(arrivalAirport, airports).map((airport) => (
+              <option key={airport.id} value={airport.name} />
+            ))}
+          </datalist>
         </div>
       </div>
       <div className="flight-search">
@@ -69,7 +120,7 @@ function FlightSearchForm({onSearch}) {
         </div>
       </div>
       <div className="flight-search">
-        <div style={{ marginRight: "117px",marginTop:"10px" }}>
+        <div style={{ marginRight: "117px", marginTop: "10px" }}>
           <label>
             <input
               type="checkbox"
@@ -78,9 +129,10 @@ function FlightSearchForm({onSearch}) {
             />
             Tek Yönlü Uçuş
           </label>
-          
         </div>
-        <div><button onClick={handleSearch}>Arama Yap</button></div>
+        <div>
+          <button onClick={handleSearch}>Arama Yap</button>
+        </div>
       </div>
     </div>
   );

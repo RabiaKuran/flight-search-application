@@ -5,10 +5,11 @@ import axios from "axios";
 function FlightSearch() {
   const [flights, setFlights] = useState([]);
   const [filteredFlights, setFilteredFlights] = useState([]);
-
+  const [list, setList] = useState(false);
   const handleSearch = (searchParams) => {
-    const { departureAirport, arrivalAirport } = searchParams;
-
+    setList(true);
+    const { departureAirport, arrivalAirport, departureDate, returnDate } =
+      searchParams;
     const filteredFlights = flights.filter((flight) => {
       return (
         flight.departureAirport
@@ -16,19 +17,18 @@ function FlightSearch() {
           .includes(departureAirport.toLowerCase()) &&
         flight.arrivalAirport
           .toLowerCase()
-          .includes(arrivalAirport.toLowerCase())
+          .includes(arrivalAirport.toLowerCase()) &&
+        flight.departureDate.toLowerCase().includes(departureDate) &&
+        flight.returnDate.toLowerCase().includes(returnDate)
       );
     });
 
     setFilteredFlights(filteredFlights);
-    console.log(filteredFlights);
   };
 
   const fetchFlights = async () => {
     const response = await axios.get("http://localhost:8000/flights");
     setFlights(response.data);
-    console.log(filteredFlights);
-    console.log(flights);
   };
   useEffect(() => {
     fetchFlights();
@@ -38,7 +38,7 @@ function FlightSearch() {
     <div style={{ marginLeft: "24px" }}>
       <h2 style={{ color: "#03befc" }}>Uçuş Arama Uygulaması</h2>
       <FlightSearchForm onSearch={handleSearch} />
-      <FlightList flights={filteredFlights}/>
+      {list ? <FlightList flights={filteredFlights} /> : <></>}
     </div>
   );
 }

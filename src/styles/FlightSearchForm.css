@@ -1,12 +1,18 @@
-/* FlightSearchForm.css */
+
 
 .flight-search-form {
     background-color: #f5f5f5;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 50%;
-  }
+    width: 100%; 
+    max-width: 600px;
+
+    @media (max-width: 768px) {
+        padding: 10px; 
+        max-width: 90%; 
+    }
+}
   
   input[type="text"],
   input[type="date"],

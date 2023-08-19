@@ -1,20 +1,21 @@
-.flightCardMain{
-    border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 10px;
-        margin-right:30px;
-        border-radius: 8px;
+.flightCardMain {
+  border: 2px solid #ccc;
+  padding: 5px;
+  margin-bottom: 10px;
+  margin-right: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
-.flightCard{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.flightCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: auto;
 }
 
-.flightPrice{
-    font-size: 24px;
-    padding: 3px;
-    border: 2px solid red;
-    border-radius: 8px;
-    
+.flightPrice {
+  font-size: 24px;
+  padding: 3px;
+  border: 2px solid red;
+  border-radius: 8px;
 }

@@ -27,8 +27,17 @@ function FlightSearch() {
   };
 
   const fetchFlights = async () => {
-    const response = await axios.get("http://localhost:8000/flights");
-    setFlights(response.data);
+    try {
+      const response = await axios.get("http://localhost:8000/flights");
+      if (response.data.length === 0) {
+        console.warn("Uçuş verileri boş geldi.");
+      } else {
+        setFlights(response.data);
+      }
+    } catch (error) {
+      console.error("Uçuş verileri çekilemedi:", error);
+    
+    }
   };
   useEffect(() => {
     fetchFlights();

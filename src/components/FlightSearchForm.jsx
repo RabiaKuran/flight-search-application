@@ -18,7 +18,11 @@ function FlightSearchForm({ onSearch }) {
   const fetchAirports = async () => {
     try {
       const response = await axios.get("http://localhost:8000/airports");
-      setAirports(response.data);
+      if (response.data.length === 0) {
+        console.warn("Havaalanı verileri boş geldi.");
+      } else {
+        setAirports(response.data);
+      }
     } catch (error) {
       console.error("Havaalanı verileri çekilemedi:", error);
     }

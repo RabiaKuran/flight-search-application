@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import FlightCard from "./FlightCard";
 import ALoading from "../components/loading/ALoading";
-
+import Grid from "@mui/material/Grid";
 function FlightList({ flights }) {
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("departureTime");
-  // Başlangıçta kalkış saatine göre sırala
+  // Başlangıçta kalkış saatine göre sıralayacak
 
   useEffect(() => {
     if (flights.length >= 0) {
@@ -15,15 +15,16 @@ function FlightList({ flights }) {
   const convertFlightLengthToMinutes = (flightLength) => {
     const timeParts = flightLength.split(" ");
     let totalMinutes = 0;
-  
+
     for (const timePart of timeParts) {
       if (timePart.includes("s")) {
         totalMinutes += parseInt(timePart) * 60;
       } else if (timePart.includes("dk")) {
-        totalMinutes += parseInt(timePart);
+        const minutesPart = parseInt(timePart);
+        totalMinutes += isNaN(minutesPart) ? 0 : minutesPart;
       }
     }
-  
+
     return totalMinutes;
   };
   const sortFlights = () => {
@@ -41,10 +42,11 @@ function FlightList({ flights }) {
         );
         break;
       case "flightLength":
-        sortedFlights.sort((a, b) =>
-        convertFlightLengthToMinutes(a.flightLength) -
-        convertFlightLengthToMinutes(b.flightLength)
-      );
+        sortedFlights.sort((a, b) => {
+          const aDuration = convertFlightLengthToMinutes(a.flightLength);
+          const bDuration = convertFlightLengthToMinutes(b.flightLength);
+          return aDuration - bDuration;
+        });
         break;
       case "price":
         sortedFlights.sort((a, b) => a.price - b.price);
@@ -63,23 +65,29 @@ function FlightList({ flights }) {
       ) : (
         <>
           
-          <div>
-          <h4>Uçuş Listesi</h4>
-            <label htmlFor="sort">Sırala:</label>
+          <Grid container spacing={1}>
+            <Grid item xs={1}>
+            <h4 style={{color:"GrayText"}}>Uçuş Listesi</h4>
+            </Grid>
+            <Grid item xs={1}>
+            <h4 htmlFor="sort" style={{color:"gray"}}>Sıralama Seç:</h4>
+              
+            </Grid>
+            <Grid item xs={2}>
             <select
-              id="sort"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <option value="departureTime">Kalkış Saati</option>
-              <option value="arrivalTime">Varış Saati</option>
-              <option value="flightLength">Uçuş Uzunluğu</option>
-              <option value="price">Fiyat</option>
-            </select>
-          </div>
-
-
-
+                id="sort"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                style={{ padding: "8px", marginTop:"12px" }}
+              >
+                <option value="departureTime">Kalkış Saati</option>
+                <option value="arrivalTime">Varış Saati</option>
+                <option value="flightLength">Uçuş Uzunluğu</option>
+                <option value="price">Fiyat</option>
+              </select>
+            </Grid>
+          
+          </Grid>
           {flights?.length === 0 ? (
             <p style={{ color: "red", textAlign: "center", fontSize: "24px" }}>
               Uygun uçuş bulunamadı.

@@ -83,5 +83,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ![image](https://github.com/RabiaKuran/flight-search-application/assets/59939284/1414d4ba-dcba-4440-b705-961a01f04a28)
 
+
 ![image](https://github.com/RabiaKuran/flight-search-application/assets/59939284/2294c922-36b8-4f46-bb93-56d21e70fecb)
 

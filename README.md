@@ -71,4 +71,17 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 
 
-MOCK API: json-server --watch api/db.json --port 8000
+### MOCK API: `json-server --watch api/db.json --port 8000`
+
+![image](https://github.com/RabiaKuran/flight-search-application/assets/59939284/66fc2da9-efd7-4f87-a5ec-ff8237a59fb5)
+
+![image](https://github.com/RabiaKuran/flight-search-application/assets/59939284/a776c896-b3b6-42cc-9299-6a02fec1e2db)
+
+![image](https://github.com/RabiaKuran/flight-search-application/assets/59939284/402fe2ee-48a6-4c08-bd14-ce25ee52882b)
+
+![image](https://github.com/RabiaKuran/flight-search-application/assets/59939284/e3692958-23d4-46cd-a882-f573b24e9451)
+
+![image](https://github.com/RabiaKuran/flight-search-application/assets/59939284/1414d4ba-dcba-4440-b705-961a01f04a28)
+
+![image](https://github.com/RabiaKuran/flight-search-application/assets/59939284/2294c922-36b8-4f46-bb93-56d21e70fecb)
+
